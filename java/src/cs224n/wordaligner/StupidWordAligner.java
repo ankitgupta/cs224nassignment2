@@ -58,14 +58,27 @@ public class StupidWordAligner extends WordAligner {
 	public double getAlignmentProb(List<String> targetSentence,
 			List<String> sourceSentence, Alignment alignment) {
 		// TODO Auto-generated method stub
+		int numFrenchWords = sourceSentence.size();
+		int numEnglishWords = targetSentence.size();
+		double sum=0;
+		double product=0;
+		for (int frenchPosition = 0; frenchPosition < numFrenchWords; frenchPosition++) {
+			sum=0;
+			for (int englishPosition = 0; englishPosition < numEnglishWords; englishPosition++) {
+				sum+=ProbabilityMap.getCount(sourceSentence.get(frenchPosition), targetSentence.get(englishPosition));
+			}
+			sum+=ProbabilityMap.getCount(sourceSentence.get(frenchPosition), NULL_WORD);
+			product+=Math.log(sum);
+		}
+		
 		double probability = 0;
 		for(Pair<Integer, Integer> p : alignment.getSureAlignments()) {
 			if(p.getFirst()>=0) 
-				probability += Math.log(FinalProbabilityMap.getCount(sourceSentence.get(p.getSecond()), targetSentence.get(p.getFirst())));
+				probability += Math.log(ProbabilityMap.getCount(sourceSentence.get(p.getSecond()), targetSentence.get(p.getFirst())));
 			else
-				probability += Math.log(FinalProbabilityMap.getCount(sourceSentence.get(p.getSecond()), NULL_WORD));
+				probability += Math.log(ProbabilityMap.getCount(sourceSentence.get(p.getSecond()), NULL_WORD));
 		}
-		return Math.exp(probability);
+		return Math.exp(probability-product);
 	}
 
 	/* (non-Javadoc)

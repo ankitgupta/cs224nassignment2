@@ -128,6 +128,12 @@ public class WordAlignmentTester {
 		else if (model.equalsIgnoreCase("stupid")) {
 			wordAligner = new StupidWordAligner();
 		}
+		else if (model.equalsIgnoreCase("model1")) {
+			wordAligner = new Model1WordAligner();
+		}
+		else if (model.equalsIgnoreCase("model2")) {
+			wordAligner = new Model2WordAligner();
+		}
 		else{
 			try {
 				@SuppressWarnings("unchecked")
