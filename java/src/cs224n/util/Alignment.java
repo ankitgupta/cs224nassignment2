@@ -18,7 +18,7 @@ import java.util.*;
    * To build an alignemnt, start with an empty one and use
    * addAlignment(i,j,true).  To display one, use the render method.
    */
-  public class Alignment {
+  public class Alignment{
     Set<Pair<Integer, Integer>> sureAlignments;
     Set<Pair<Integer, Integer>> possibleAlignments;
 

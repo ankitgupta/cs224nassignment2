@@ -134,6 +134,9 @@ public class WordAlignmentTester {
 		else if (model.equalsIgnoreCase("model2")) {
 			wordAligner = new Model2WordAligner();
 		}
+		else if (model.equalsIgnoreCase("model3")) {
+			wordAligner = new Model3WordAligner();
+		}
 		else{
 			try {
 				@SuppressWarnings("unchecked")

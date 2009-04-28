@@ -22,7 +22,7 @@ public class Model1WordAligner extends WordAligner {
 	CounterMap<String, String> TempProbabilityMap; //Targer, Source
 	private Counter<String> FrenchCount, EnglishCount;
 //	private double epsilon = 0.1; //Probability of choosing french sentence of a particular length 
-	private double NULL_PROB = 0.1; //Probability of aligning to NULL 
+	private double NULL_PROB = 0.4; //Probability of aligning to NULL 
 	/* (non-Javadoc)
 	 * @see cs224n.wordaligner.WordAligner#alignSentencePair(cs224n.util.SentencePair)
 	 */
@@ -114,7 +114,7 @@ public class Model1WordAligner extends WordAligner {
 			for(String source : sourceWords){
 				FrenchCount.incrementCount(source, 1.0);
 				for(String target : targetWords){
-					CountMap.setCount(target, source, 1.0);
+					CountMap.incrementCount(target, source, 1.0);
 				}
 			}
 			for(String target : targetWords){

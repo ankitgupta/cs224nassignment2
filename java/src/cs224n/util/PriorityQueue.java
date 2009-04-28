@@ -283,6 +283,9 @@ public class PriorityQueue <E> implements Iterator<E>, Serializable, Cloneable {
     size = newsize;
   }
 
+  public boolean contains(E e) {
+	  return elements.contains(e);
+  }
   public static void main(String[] args) {
     PriorityQueue<String> pq = new PriorityQueue<String>();
     System.out.println(pq);
