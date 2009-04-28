@@ -134,6 +134,7 @@ public class Model3WordAligner extends WordAligner {
 //		System.out.println(Partitions.get(4)+" "+Factorial.get(4));
 		// Initialization
 		p = 0.5;
+		int k = 600;
 		possibleAlignments = new HashMap<Pair<List<String>,List<String>>, Counter<Alignment>>();
 		for(SentencePair pair : trainingPairs){
 			List<String> targetWords = pair.getEnglishWords();
@@ -141,8 +142,9 @@ public class Model3WordAligner extends WordAligner {
 			int I = targetWords.size();
 			int J = sourceWords.size();
 			CounterMap<Integer, Integer> alignmentProbability = model2.getProbAGivenFE(pair); // french, english
-			Counter<Alignment> alignments = model2.CalculateTopKAlignments(alignmentProbability, 400, pair);
+			Counter<Alignment> alignments = model2.CalculateTopKAlignments(alignmentProbability, k, pair);
 			possibleAlignments.put(new Pair<List<String>, List<String>>(sourceWords, targetWords), alignments);
+			System.out.println("Calculated Possible Allignments");
 //			System.out.println("French "+sourceWords+" English "+targetWords);
 //			System.out.println(alignments);
 			for(int i=0;i<I;i++) {
@@ -152,53 +154,53 @@ public class Model3WordAligner extends WordAligner {
 //						System.out.println("****FLAG***\n"+i+","+I+","+J+","+j);
 					dCountMap.incrementCount(new Pair<Pair<Integer,Integer>, Integer>(new Pair<Integer, Integer>(i,I),J), j, alignmentProbability.getCount(j, i));
 				}
-//				for(int phi = 1; phi <= phimax; phi++) {
-//					nCountMap.setCount(targetWords.get(i), phi, 1.0);
-//				}
+				for(int phi = 1; phi <= phimax; phi++) {
+					nCountMap.setCount(targetWords.get(i), phi, 1.0);
+				}
 			}
 
-			CounterMap<Integer, Integer> alpha = new CounterMap<Integer, Integer>();
-			for(int i=0;i<I;i++) {
-				for(int k=1;k<=phimax;k++) {
-					double beta = 0.0;
-					double tempprob;
-					for(int j=0;j<J;j++) {
-						tempprob = model2ProbabilityMap.getCount(sourceWords.get(j), targetWords.get(i));
-//						if(tempprob == 1) {
-//							beta = betamax;
-//							break;
-////							System.out.println("Bad");
+//			CounterMap<Integer, Integer> alpha = new CounterMap<Integer, Integer>();
+//			for(int i=0;i<I;i++) {
+//				for(int k=1;k<=phimax;k++) {
+//					double beta = 0.0;
+//					double tempprob;
+//					for(int j=0;j<J;j++) {
+//						tempprob = model2ProbabilityMap.getCount(sourceWords.get(j), targetWords.get(i));
+////						if(tempprob == 1) {
+////							beta = betamax;
+////							break;
+//////							System.out.println("Bad");
+////						}
+//						beta += Math.pow(tempprob/(1 - tempprob), k);
+//					}
+//					alpha.setCount(i, k, Math.pow(-1, k+1)*beta/k);
+//				}
+//			}
+//			for(int i=0;i<I;i++) {
+//				double r = 1.0;
+//				for(int j=0;j<J;j++) {
+//					r *= 1 - model2ProbabilityMap.getCount(sourceWords.get(j), targetWords.get(i));
+//				}
+//				for(int phi = 1; phi <= phimax; phi++) {
+//					double sum = 0.0;
+//					for(List<Integer> p : Partitions.get(phi)) {
+//						double prod = 1.0;
+//						for(int k=1;k<=phi;k++) {
+//							int n = times(p,k);
+//							if(n>0) {
+//								prod *= Math.pow(alpha.getCount(i, k),n)/Factorial.get(n);
+////								if(Double.isInfinite(alpha.getCount(i, k)))
+////									System.out.println("****FLAG***\n"+targetWords.get(i)+","+n);
+//							}
 //						}
-						beta += Math.pow(tempprob/(1 - tempprob), k);
-					}
-					alpha.setCount(i, k, Math.pow(-1, k+1)*beta/k);
-				}
-			}
-			for(int i=0;i<I;i++) {
-				double r = 1.0;
-				for(int j=0;j<J;j++) {
-					r *= 1 - model2ProbabilityMap.getCount(sourceWords.get(j), targetWords.get(i));
-				}
-				for(int phi = 1; phi <= phimax; phi++) {
-					double sum = 0.0;
-					for(List<Integer> p : Partitions.get(phi)) {
-						double prod = 1.0;
-						for(int k=1;k<=phi;k++) {
-							int n = times(p,k);
-							if(n>0) {
-								prod *= Math.pow(alpha.getCount(i, k),n)/Factorial.get(n);
-//								if(Double.isInfinite(alpha.getCount(i, k)))
-//									System.out.println("****FLAG***\n"+targetWords.get(i)+","+n);
-							}
-						}
-						sum += prod;
-//						if(targetWords.get(i).equals("A")) 
-//							System.out.println(targetWords.get(i)+" += "+r+"*"+sum);
-					}
-//					System.out.println(targetWords.get(i)+" += "+r+"*"+sum);
-					nCountMap.incrementCount(targetWords.get(i), phi, r*sum);
-				}
-			}
+//						sum += prod;
+////						if(targetWords.get(i).equals("A")) 
+////							System.out.println(targetWords.get(i)+" += "+r+"*"+sum);
+//					}
+////					System.out.println(targetWords.get(i)+" += "+r+"*"+sum);
+//					nCountMap.incrementCount(targetWords.get(i), phi, r*sum);
+//				}
+//			}
 		}
 		double total;
 		for(Pair<Pair<Integer,Integer>, Integer> pair1 : dCountMap.keySet()) {
@@ -225,6 +227,7 @@ public class Model3WordAligner extends WordAligner {
 //		System.out.println(dProbabilityMap);
 
 		//EM
+		System.out.println("Starting EM");
 		int niterations = 300;
 		boolean terminate = false;
 		double tolerance = 0.01;
