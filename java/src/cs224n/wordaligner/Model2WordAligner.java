@@ -24,11 +24,11 @@ public class Model2WordAligner extends WordAligner {
 
 	CounterMap<String, String> CountMap; //Target, Source
 	CounterMap<String, String> ProbabilityMap; //Source, Target
-	CounterMap<String, String> TempProbabilityMap; //Targer, Source
+	CounterMap<String, String> TempProbabilityMap; //Target, Source
 	private Counter<String> FrenchCount, EnglishCount;
 	//	private double epsilon = 0.1; //Probability of choosing french sentence of a particular length 
 	private double NULL_PROB = 0.2; //Probability of aligning to NULL 
-	private int nbuckets = 15;
+	private int nbuckets = 6;
 	private double[] d, dupdate;
 	/* (non-Javadoc)
 	 * @see cs224n.wordaligner.WordAligner#alignSentencePair(cs224n.util.SentencePair)
@@ -276,7 +276,7 @@ public class Model2WordAligner extends WordAligner {
 
 	private int bucket(double x) {
 		x = Math.abs(x);
-		//		x = x*5 ; 
+		x = x/4 ; 
 		if(x>= nbuckets-1)
 			return nbuckets-1;
 		return (int) Math.floor(x);

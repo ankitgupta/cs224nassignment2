@@ -1,0 +1,11 @@
+Using base path: ../../pa2-data/
+Running with data: test
+Running with model: model3
+No language specified.  Use -language languageName. Using default -> french
+Terminated after 23 iterations
+0: 0.7999999999999997
+1: 4.3620828855762173E-16
+2: 2.1508414361133634E-22
+3: 8.603617949266104E-29
+4: 3.782520635537802E-36
+5: 3.56295765544524E-45

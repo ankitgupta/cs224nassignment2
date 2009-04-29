@@ -1,0 +1,55 @@
+Using base path: ../../pa2-data/
+Running with data: miniTest
+Running with model: model3
+Terminated after 15 iterations
+0: 0.8
+1: 0.0
+2: 0.0
+3: 0.0
+4: 0.0
+5: 0.0
+6: 0.0
+7: 0.0
+8: 0.0
+9: 0.0
+10: 0.0
+11: 0.0
+12: 0.0
+13: 0.0
+14: 0.0
+Calculated Possible Alignments
+Calculated Possible Alignments
+Calculated Possible Alignments
+Calculated Possible Alignments
+Starting EM
+Converged after 2 iterations
+Alignment:
+[ ]      | X
+   [ ]   | Y
+      [#]| Z
+---------'
+ A  B  C 
+
+Alignment:
+[#]   | X
+   [ ]| Y
+------'
+ A  B 
+
+Alignment:
+[ ]   | Y
+ #    | W
+   [ ]| Z
+------'
+ B  C 
+
+Alignment:
+[#]   | U
+   [#]| V
+    # | W
+------'
+ D  F 
+
+Precision: 0.6666666666666666
+Recall: 0.4444444444444444
+AER: 0.4666666666666667

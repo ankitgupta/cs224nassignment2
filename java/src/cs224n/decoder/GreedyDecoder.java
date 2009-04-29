@@ -152,7 +152,7 @@ public class GreedyDecoder extends Decoder {
   public Hypothesis translateOneOrTwoWords(List<String> sourceSentence, Hypothesis currh, Hypothesis maxh){
     
     // sanity check: should start with currh==maxh
-    if (currh.getProb() != maxh.getProb()) {
+    if (Math.abs(currh.getProb() - maxh.getProb())>0.000001) {
       System.err.println("ERROR in translateOneOrTwoWords:");
       System.err.println("currh="+currh);
       System.err.println("currh.getProb()="+currh.getProb());
