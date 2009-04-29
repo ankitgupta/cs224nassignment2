@@ -26,6 +26,7 @@ public class StupidWordAligner extends WordAligner {
 	@Override
 	public Alignment alignSentencePair(SentencePair sentencePair) {
 		// TODO Auto-generated method stub
+		System.out.println("Aligning "+sentencePair);
 		Alignment alignment = new Alignment();
 		int numFrenchWords = sentencePair.getFrenchWords().size();
 		int numEnglishWords = sentencePair.getEnglishWords().size();
@@ -39,6 +40,7 @@ public class StupidWordAligner extends WordAligner {
 					max = value;
 					index = englishPosition;
 				}
+				System.out.println(frenchPosition+":"+sentencePair.getFrenchWords().get(frenchPosition)+"|"+englishPosition+":"+sentencePair.getEnglishWords().get(englishPosition)+" c(e):"+EnglishCount.getCount(sentencePair.getEnglishWords().get(englishPosition))+" c(f):"+FrenchCount.getCount(sentencePair.getFrenchWords().get(frenchPosition))+" c(f,e)"+JointCount.getCount(sentencePair.getEnglishWords().get(englishPosition), sentencePair.getFrenchWords().get(frenchPosition)));
 			}
 			value = FinalProbabilityMap.getCount(sentencePair.getFrenchWords().get(frenchPosition), NULL_WORD);
 			if(max < value) {
@@ -114,7 +116,7 @@ public class StupidWordAligner extends WordAligner {
 		}
 		for(String target : JointCount.keySet()) {
 			for(String source : JointCount.getCounter(target).keySet()) {
-				ProbabilityMap.incrementCount(target, source, Math.pow(JointCount.getCount(target, source),3.0)/(FrenchCount.getCount(source)*EnglishCount.getCount(target)));
+				ProbabilityMap.incrementCount(target, source, Math.pow(JointCount.getCount(target, source)/(FrenchCount.getCount(source)*EnglishCount.getCount(target)),1.0));
 //				ProbabilityMap.incrementCount(target, source, JointCount.getCount(target, source)/(EnglishCount.getCount(target)));
 //				ProbabilityMap.incrementCount(target, source, Math.pow(JointCount.getCount(target, source),2));
 			}

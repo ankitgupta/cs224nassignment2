@@ -88,7 +88,10 @@ public class Model2WordAligner extends WordAligner {
 			else
 				probability += Math.log(NULL_PROB*ProbabilityMap.getCount(sourceSentence.get(p.getSecond()), NULL_WORD));
 		}
-		return Math.exp(probability-product);
+		double ret = Math.exp(probability)/Math.exp(product);
+		if(ret - 1.0 <= 0.00001 && ret > 1.0)
+			ret = 1.0;
+		return ret;
 	}
 
 	/* (non-Javadoc)
@@ -276,7 +279,7 @@ public class Model2WordAligner extends WordAligner {
 
 	private int bucket(double x) {
 		x = Math.abs(x);
-		x = x/4 ; 
+		x = x/4; 
 		if(x>= nbuckets-1)
 			return nbuckets-1;
 		return (int) Math.floor(x);
